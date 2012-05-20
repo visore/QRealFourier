@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+df1eca524e5da405e625f8fd46e3d381 headers/moc_qfouriertransformer.cxx
+66e04b230d580b0e5dc86f81163f4d2f headers/moc_vifouriertransformer.cxx

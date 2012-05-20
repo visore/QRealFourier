@@ -1,0 +1,25 @@
+#!/bin/bash
+
+removeFiles()
+{
+	for i in "$1"/*; do
+		if [ -d "$i" ];then
+			removeFiles "$i"
+		elif [ -f "$i" ]; then
+			st=$(echo "$i"|grep '~')
+			len=$(echo ${#st})
+			if [ $len -gt 0 ]; then
+				rm "$i"
+			fi
+		fi
+	done
+}
+
+if [ $# -ne 1 ]; then
+	echo "Please provide a commit message enclosed in quotation marks."
+else
+	removeFiles .
+	git add -A
+	git commit -a -m "$1"
+	git push -u origin master
+fi
