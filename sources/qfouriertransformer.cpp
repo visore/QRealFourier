@@ -204,3 +204,29 @@ void QFourierTransformer::inverseTransformSeperateThread()
 {
 	mInverseThread->start();
 }
+
+QVector<QComplexFloat> toComplexFloat(float input[], qint32 numberOfSamples)
+{
+	QVector<QComplexFloat> result;
+	int last = numberOfSamples / 2;
+	result.push_back(QComplexFloat(input[0], 0));
+	for(int i = 1; i < last; ++i)
+	{
+		result.push_back(QComplexFloat(input[i], -input[last + i]));
+	}
+	result.push_back(QComplexFloat(input[last], 0));
+	return result;
+}
+
+QVector<QComplexDouble> toComplexDouble(float input[], qint32 numberOfSamples)
+{
+	QVector<QComplexDouble> result;
+	int last = numberOfSamples / 2;
+	result.push_back(QComplexDouble(input[0], 0));
+	for(int i = 1; i < last; ++i)
+	{
+		result.push_back(QComplexDouble(input[i], -input[last + i]));
+	}
+	result.push_back(QComplexDouble(input[last], 0));
+	return result;
+}

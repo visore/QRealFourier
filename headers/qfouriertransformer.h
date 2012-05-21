@@ -4,6 +4,7 @@
 #include "qfourierfixedthread.h"
 #include "qfouriervariablethread.h"
 #include "qwindower.h"
+#include "qcomplexnumber.h"
 
 class QFourierTransformer : public QObject
 {
@@ -42,6 +43,9 @@ class QFourierTransformer : public QObject
 		void transform(float input[], float output[], qint32 numberOfSamples, QWindower *windower = NULL, Direction direction = QFourierTransformer::Forward);
 		void forwardTransform(float *input, float *output, qint32 numberOfSamples, QWindower *windower = NULL);
 		void inverseTransform(float input[], float output[], qint32 numberOfSamples);
+
+		static QVector<QComplexFloat> toComplexFloat(float input[], qint32 numberOfSamples);
+		static QVector<QComplexDouble> toComplexDouble(float input[], qint32 numberOfSamples);
 
 	private:
 
