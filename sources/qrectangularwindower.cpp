@@ -1,6 +1,6 @@
 #include "qrectangularwindower.h"
 
-qreal QRectangularWindower::calculate(qint32 currentSample, qint32 totalSamples)
+double QRectangularWindower::calculate(int currentSample, int totalSamples)
 {
 	return 1.0;
 }

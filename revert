@@ -1,0 +1,51 @@
+#!/bin/bash
+
+rename 's/q/vi/' headers/*
+sed -i 's/q/vi/g' headers/*
+sed -i 's/Q/Vi/g' headers/*
+sed -i 's/ViString/QString/g' headers/*
+sed -i 's/ViVector/QVector/g' headers/*
+sed -i 's/ViThread/QThread/g' headers/*
+sed -i 's/ViObject/QObject/g' headers/*
+sed -i 's/ViList/QList/g' headers/*
+sed -i 's/vimath/qmath/g' headers/*
+sed -i 's/Vi_OBJECT/Q_OBJECT/g' headers/*
+sed -i 's/VitGlobal/QtGlobal/g' headers/*
+sed -i 's/viPow/qPow/g' headers/*
+sed -i 's/viSqrt/qSqrt/g' headers/*
+sed -i 's/viCos/qCos/g' headers/*
+sed -i 's/viSin/qSin/g' headers/*
+sed -i 's/viTan/qTan/g' headers/*
+sed -i 's/viaCos/qAcos/g' headers/*
+sed -i 's/viAsin/qAsin/g' headers/*
+sed -i 's/viAtan/qAtan/g' headers/*
+sed -i 's/viDeleteAll/qDeleteAll/g' headers/*
+sed -i 's/#ifdef Vi/#ifdef VI/g' headers/*
+sed -i 's/#ifndef Vi/#ifndef VI/g' headers/*
+sed -i 's/#define Vi/#define VI/g' headers/*
+
+rename 's/q/vi/' sources/*
+sed -i 's/q/vi/g' sources/*
+
+sed -i 's/Q/Vi/g' sources/*
+sed -i 's/ViString/QString/g' sources/*
+sed -i 's/ViVector/QVector/g' sources/*
+sed -i 's/ViThread/QThread/g' sources/*
+sed -i 's/ViObject/QObject/g' sources/*
+sed -i 's/ViList/QList/g' sources/*
+sed -i 's/vimath/qmath/g' sources/*
+sed -i 's/Vi_OBJECT/Q_OBJECT/g' sources/*
+sed -i 's/VitGlobal/QtGlobal/g' sources/*
+sed -i 's/viPow/qPow/g' sources/*
+sed -i 's/viSqrt/qSqrt/g' sources/*
+sed -i 's/viCos/qCos/g' sources/*
+sed -i 's/viSin/qSin/g' sources/*
+sed -i 's/viTan/qTan/g' sources/*
+sed -i 's/viaCos/qAcos/g' sources/*
+sed -i 's/viAsin/qAsin/g' sources/*
+sed -i 's/viAtan/qAtan/g' sources/*
+sed -i 's/viDeleteAll/qDeleteAll/g' sources/*
+sed -i 's/#ifdef Vi/#ifdef VI/g' sources/*
+sed -i 's/#ifndef Vi/#ifndef VI/g' sources/*
+sed -i 's/#define Vi/#define VI/g' sources/*
+

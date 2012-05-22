@@ -13,7 +13,7 @@ QWindower::~QWindower()
 	}
 }
 
-void QWindower::apply(float *data, qint32 size)
+void QWindower::apply(float *data, int size)
 {
 	createWindow(size);
 	for(int i = 0; i < size; ++i)
@@ -22,7 +22,7 @@ void QWindower::apply(float *data, qint32 size)
 	}
 }
 
-void QWindower::createWindow(qint32 size)
+void QWindower::createWindow(int size)
 {
 	if(mWindow == NULL)
 	{
@@ -37,7 +37,7 @@ void QWindower::createWindow(qint32 size)
 	}
 }
 
-void QWindower::fillWindow(qint32 size)
+void QWindower::fillWindow(int size)
 {
 	for(int i = 0; i < size; ++i)
 	{

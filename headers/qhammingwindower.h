@@ -8,7 +8,7 @@ class QHammingWindower : public QWindower
 
 	public:
 
-		qreal calculate(qint32 currentSample, qint32 totalSamples);
+		double calculate(int currentSample, int totalSamples);
 		QString name();
 
 };

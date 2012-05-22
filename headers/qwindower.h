@@ -7,7 +7,7 @@
 #include "math.h"
 #include <qmath.h>
 
-typedef QVector<qreal> QWindow;
+typedef QVector<double> QWindow;
 
 class QWindower
 {
@@ -16,14 +16,14 @@ class QWindower
 
 		QWindower();
 		~QWindower();
-		void apply(float *data, qint32 size);
-		virtual qreal calculate(qint32 currentSample, qint32 totalSamples) = 0;
+		void apply(float *data, int size);
+		virtual double calculate(int currentSample, int totalSamples) = 0;
 		virtual QString name() = 0;
 
 	protected:
 
-		void createWindow(qint32 size);
-		void fillWindow(qint32 size);
+		void createWindow(int size);
+		void fillWindow(int size);
 
 	protected:
 
