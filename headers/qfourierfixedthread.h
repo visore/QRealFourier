@@ -1,7 +1,7 @@
 #ifndef QFOURIERFIXEDTHREAD_H
 #define QFOURIERFIXEDTHREAD_H
 
-#include <QtCore/qmath.h> 
+#include <qmath.h> 
 #include "FFTRealFixLen.h"
 #include "qfourierthread.h"
 
@@ -11,7 +11,7 @@ class QFourierFixedThread : public QFourierThread
 
 	public:
 		
-		QFourierFixedThread();
+		QFourierFixedThread(QFourierTransformer *transformer);
 		virtual void run() = 0;
 
 	protected:
@@ -26,7 +26,7 @@ class QFourierFixedForwardThread : public QFourierFixedThread<T>
 
 	public:
 
-		QFourierFixedForwardThread();
+		QFourierFixedForwardThread(QFourierTransformer *transformer);
 		void run();
 
 };
@@ -37,7 +37,18 @@ class QFourierFixedInverseThread : public QFourierFixedThread<T>
 
 	public:
 
-		QFourierFixedInverseThread();
+		QFourierFixedInverseThread(QFourierTransformer *transformer);
+		void run();
+
+};
+
+template <int T>
+class QFourierFixedRescaleThread : public QFourierFixedThread<T>
+{
+
+	public:
+
+		QFourierFixedRescaleThread(QFourierTransformer *transformer);
 		void run();
 
 };

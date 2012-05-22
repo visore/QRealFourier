@@ -1,8 +1,10 @@
 #include "qfourierthread.h"
+#include "qfouriertransformer.h"
 
-QFourierThread::QFourierThread()
+QFourierThread::QFourierThread(QFourierTransformer *transformer)
 	: QThread()
 {
+	mTransformer = transformer;
 	mInput = NULL;
 	mOutput = NULL;
 	mSize = 0;
@@ -22,4 +24,9 @@ void QFourierThread::setSize(int size)
 int QFourierThread::size()
 {
 	return mSize;
+}
+
+void QFourierThread::notify()
+{
+	mTransformer->emitFinished();
 }

@@ -10,7 +10,7 @@ class QFourierVariableThread : public QFourierThread
 
 	public:
 
-		QFourierVariableThread();
+		QFourierVariableThread(QFourierTransformer *transformer);
 
 };
 
@@ -19,7 +19,7 @@ class QFourierVariableForwardThread : public QFourierVariableThread
 
 	public:
 
-		QFourierVariableForwardThread();
+		QFourierVariableForwardThread(QFourierTransformer *transformer);
 		void run();
 
 };
@@ -29,7 +29,17 @@ class QFourierVariableInverseThread : public QFourierVariableThread
 
 	public:
 
-		QFourierVariableInverseThread();
+		QFourierVariableInverseThread(QFourierTransformer *transformer);
+		void run();
+
+};
+
+class QFourierVariableRescaleThread : public QFourierVariableThread
+{
+
+	public:
+
+		QFourierVariableRescaleThread(QFourierTransformer *transformer);
 		void run();
 
 };
