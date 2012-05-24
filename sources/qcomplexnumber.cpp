@@ -52,4 +52,52 @@ T QComplexNumber<T>::imaginary()
 	return mImaginary;
 }
 
+template <typename T>
+QComplexNumber<T>& QComplexNumber<T>::operator+=(const QComplexNumber<T> &number)
+{
+	mReal += number.mReal;
+	mImaginary += number.mImaginary;
+	return *this;
+}
+
+template <typename T>
+QComplexNumber<T>& QComplexNumber<T>::operator-=(const QComplexNumber<T> &number)
+{
+	mReal -= number.mReal;
+	mImaginary -= number.mImaginary;
+	return *this;
+}
+
+template <typename T>
+QComplexNumber<T>& QComplexNumber<T>::operator/=(const QComplexNumber<T> &number)
+{
+	mReal /= number.mReal;
+	mImaginary /= number.mImaginary;
+	return *this;
+}
+
+template <typename T>
+QComplexNumber<T>& QComplexNumber<T>::operator*=(const QComplexNumber<T> &number)
+{
+	mReal *= number.mReal;
+	mImaginary *= number.mImaginary;
+	return *this;
+}
+
+template <typename T>
+QComplexNumber<T>& QComplexNumber<T>::operator/=(const T &value)
+{
+	mReal /= value;
+	mImaginary /= value;
+	return *this;
+}
+
+template <typename T>
+QComplexNumber<T>& QComplexNumber<T>::operator*=(const T &value)
+{
+	mReal *= value;
+	mImaginary *= value;
+	return *this;
+}
+
 #endif

@@ -1,5 +1,5 @@
 #include "qfouriertransformer.h"
-#include "qhammingwindower.h"
+#include "qwindowfunction.h"
 #include "print.h"
 
 const int SIZE = 128;
@@ -20,7 +20,8 @@ int main()
 	print(samples, SIZE);
 
 	QFourierTransformer transformer;
-	QHammingWindower windower;
+	QHammingFunction<float> windowFunction;
+	windowFunction.create(SIZE);
 
 	//Setting a fixed size for the transformation
 	if(!transformer.setFixedSize(SIZE))
@@ -28,7 +29,7 @@ int main()
 		print("This size is not a supported power of 2. Using a variable FFT instead.\n");
 	}
 
-	transformer.forwardTransform(samples, fft, &windower);
+	transformer.forwardTransform(samples, fft, &windowFunction);
 	transformer.inverseTransform(fft, samples);
 	
 	print("Samples after transformation and before rescaling:\n");

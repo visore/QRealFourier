@@ -1,11 +1,5 @@
 #include "qfouriertransformer.h"
 
-#include <iostream>
-#include <QString>
-
-using namespace std;
-
-
 QFourierTransformer::QFourierTransformer(Execution execution, int fixedSize)
 	 : QObject()
 {
@@ -105,11 +99,11 @@ void QFourierTransformer::setExecution(Execution execution)
 	}
 }
 
-void QFourierTransformer::transform(float input[], float output[], QWindower *windower, Direction direction)
+void QFourierTransformer::transform(float input[], float output[], QWindowFunction<float> *windowFunction, Direction direction)
 {
 	if(direction == QFourierTransformer::Forward)
 	{
-		forwardTransform(input, output, windower);
+		forwardTransform(input, output, windowFunction);
 	}
 	else
 	{
@@ -117,11 +111,11 @@ void QFourierTransformer::transform(float input[], float output[], QWindower *wi
 	}
 }
 
-void QFourierTransformer::forwardTransform(float *input, float *output, QWindower *windower)
+void QFourierTransformer::forwardTransform(float *input, float *output, QWindowFunction<float> *windowFunction)
 {
-	if(windower != NULL)
+	if(windowFunction != NULL)
 	{
-		windower->apply(input, mSize);
+		windowFunction->apply(input, mSize);
 	}
 	fixedForwardTransform(input, output);
 }
@@ -136,11 +130,11 @@ void QFourierTransformer::rescale(float input[])
 	fixedRescale(input);
 }
 
-void QFourierTransformer::transform(float input[], float output[], int numberOfSamples, QWindower *windower, Direction direction)
+void QFourierTransformer::transform(float input[], float output[], int numberOfSamples, QWindowFunction<float> *windowFunction, Direction direction)
 {
 	if(direction == QFourierTransformer::Forward)
 	{
-		forwardTransform(input, output, numberOfSamples, windower);
+		forwardTransform(input, output, numberOfSamples, windowFunction);
 	}
 	else
 	{
@@ -148,11 +142,11 @@ void QFourierTransformer::transform(float input[], float output[], int numberOfS
 	}
 }
 
-void QFourierTransformer::forwardTransform(float *input, float *output, int numberOfSamples, QWindower *windower)
+void QFourierTransformer::forwardTransform(float *input, float *output, int numberOfSamples, QWindowFunction<float> *windowFunction)
 {
-	if(windower != NULL)
+	if(windowFunction != NULL)
 	{
-		windower->apply(input, numberOfSamples);
+		windowFunction->apply(input, numberOfSamples);
 	}
 	variableForwardTransform(input, output, numberOfSamples);
 }

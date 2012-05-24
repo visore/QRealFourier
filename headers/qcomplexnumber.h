@@ -18,6 +18,14 @@ class QComplexNumber
 		T real();
 		T imaginary();
 
+		QComplexNumber<T>& operator+=(const QComplexNumber<T> &number);
+		QComplexNumber<T>& operator-=(const QComplexNumber<T> &number);
+		QComplexNumber<T>& operator/=(const QComplexNumber<T> &number);
+		QComplexNumber<T>& operator*=(const QComplexNumber<T> &number);
+
+		QComplexNumber<T>& operator/=(const T &value);
+		QComplexNumber<T>& operator*=(const T &value);
+
 	private:
 
 		T mReal;

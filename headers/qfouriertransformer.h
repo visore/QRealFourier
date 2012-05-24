@@ -3,7 +3,7 @@
 
 #include "qfourierfixedthread.h"
 #include "qfouriervariablethread.h"
-#include "qwindower.h"
+#include "qwindowfunction.h"
 #include "qcomplexnumber.h"
 
 typedef QVector<QComplexFloat> QComplexVector;
@@ -39,13 +39,13 @@ class QFourierTransformer : public QObject
 		bool setFixedSize(int size);
 		void setExecution(Execution execution);
 		
-		void transform(float input[], float output[], QWindower *windower = NULL, Direction direction = QFourierTransformer::Forward);
-		void forwardTransform(float *input, float *output, QWindower *windower = NULL);
+		void transform(float input[], float output[], QWindowFunction<float> *windowFunction = NULL, Direction direction = QFourierTransformer::Forward);
+		void forwardTransform(float *input, float *output, QWindowFunction<float> *windowFunction = NULL);
 		void inverseTransform(float input[], float output[]);
 		void rescale(float input[]);
 
-		void transform(float input[], float output[], int numberOfSamples, QWindower *windower = NULL, Direction direction = QFourierTransformer::Forward);
-		void forwardTransform(float *input, float *output, int numberOfSamples, QWindower *windower = NULL);
+		void transform(float input[], float output[], int numberOfSamples, QWindowFunction<float> *windowFunction = NULL, Direction direction = QFourierTransformer::Forward);
+		void forwardTransform(float *input, float *output, int numberOfSamples, QWindowFunction<float> *windowFunction = NULL);
 		void inverseTransform(float input[], float output[], int numberOfSamples);
 
 		void rescale(float input[], int numberOfSamples);
