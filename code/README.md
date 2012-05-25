@@ -1,9 +1,9 @@
 ==========================================================================================
 ==========================================================================================
 ==========================================================================================
-====                                                                                  ====
-====                                   QRealFourier                                   ====
-====                                                                                  ====
+
+                                       QRealFourier
+
 ==========================================================================================
 ==========================================================================================
 ==========================================================================================
@@ -17,7 +17,7 @@ Developer: Christoph Stallmann
 
 
 ==========================================================================================
-=                                         About                                          =
+                                          About
 ==========================================================================================
 
 QRealFourier is a Qt library for calculating FFTs on real samples. This library is based 
@@ -29,7 +29,7 @@ time which creates a more efficient FFT implementation. The library is slightly 
 takes up a couple of extra bytes, but this is a fair trade-off for simplicity.
 
 ==========================================================================================
-=                                     Requirements                                       =
+                                      Requirements
 ==========================================================================================
 
 QRealFourier requires CMake (2.6 or later) for makefile generation. Qt (4.7 or later) is
@@ -37,26 +37,44 @@ also required. Qt5 will be supported soon. Any native compilers should do, recom
 g++ for Linux and MinGW for Windows.
 
 ==========================================================================================
-=                                       Compiling                                        =
+                                        Compiling
 ==========================================================================================
+
+The simplest way of compiling QRealFourier is to run the following command:
+
+<sh> build/os/os-build-architecture options
+
+where os is your operating system (Linux, Windows or Mac) and architecture is 32bit or
+64bit. You can specify any of the following options in any order:
+
+1. configure: configure cmake
+2. build: compile QRealFourier
+3. install: install the library
+4. package: create a DEB or RPM package (if possible)
+
+Linux example: "sh build/linux/linux-build-32bit configure build install package"
+
+Or you can manually build as follows:
 
 With Qt installed in the default location
 
-1. mkdir build
-2. cd build
-3. cmake ..
+1. cd code
+2. mkdir build
+3. cd build
+4. cmake ..
 5. make
 
 With Qt installed in a custom location
 
-1. mkdir build
-2. cd build
-3. ccmake ..
-4. press 'c', 'c' and then 'g' (change Qt path if needed)
-5. make
+1. cd code
+2. mkdir build
+3. cd build
+4. ccmake ..
+5. press 'c', 'c' and then 'g' (change Qt path if needed)
+6. make
 
 ==========================================================================================
-=                                         Usage                                          =
+                                          Usage
 ==========================================================================================
 
 There are three examples under the example directory.
@@ -67,9 +85,11 @@ taken in the last example.
 You can execute the examples by using the command:
 ./exampleN
 where N indicates the number of the example (1, 2 or 3).
+There also is a standalone example that uses CMake to find the installed QRealFourier
+library and linking to it.
 
 ==========================================================================================
-=                                      Fixed Sizes                                       =
+                                       Fixed Sizes
 ==========================================================================================
 
 QRealFourier is optimized for the following sizes:
@@ -81,7 +101,7 @@ Any other sizes will work, but pre-calculations have to be done during run-time 
 reduces the performance.
 
 ==========================================================================================
-=                                    Real & Imaginary                                    =
+                                     Real & Imaginary
 ==========================================================================================
 
 When doing the following:
@@ -104,17 +124,19 @@ can be used to convert this array into a QComplexVector. QComplexVector is a QVe
 with QComplexNumbers, each number has a real and imaginary part.
 
 ==========================================================================================
-=                                     The Main Class                                     =
+                                      The Main Class
 ==========================================================================================
 
 QRealFourier is the interface that should be used for all transformations.
 
-1.	QFourierTransformer(int size = -1);
+1.	QFourierTransformer(int size = -1, QString functionName = "");
 
-	Constructor with optional parameter.
+	Constructor with optional parameters.
 
-	The parameter specifies the fixed size of the FFT.
-	The default is -1 which will result in a slower variable-sized FFT.
+	The first parameter specifies the fixed size of the FFT. The default is -1 which will
+	result in a slower variable-sized FFT.
+	The second parameter specifies the window function to use. By default a rectangular
+	window will be used.
    
 2.	Initialization setSize(int size);
 
@@ -125,8 +147,18 @@ QRealFourier is the interface that should be used for all transformations.
 	size is not in the default list, but still a valid FFT size (power of 2),
 	VariableSize will be returned. If the size is an invalid FFT size, InvalidSize is
 	returned.
+
+3.	bool setWindowFunction(QString functionName);
+
+	Sets the window function to be used. If this function is never called, nor a name
+	passed to the constructor, a rectangular window will be used, which by default will be
+	NULL, and not have any changes on the input data.
+
+4.	QStringList windowFunctions();
+
+	Returns a list of strings for all the supported window functions.
 		
-3.	void forwardTransform(float *input, float *output, QWindower *windower);
+5.	void forwardTransform(float *input, float *output, QWindower *windower);
 
 	Calculates the FFT of the input samples and stores them in output. The output array
 	must be allocated beforehand and has the same size as the input array.
@@ -135,34 +167,34 @@ QRealFourier is the interface that should be used for all transformations.
 	will automatically be adjusted according to the window function. If NULL is passed
 	no windowing will be done.
 
-4.	void inverseTransform(float input[], float output[]);
+6.	void inverseTransform(float input[], float output[]);
 
 	Calculates the inverse FFT from the input and stores it as real samples in the output
 	array. The output array must be allocated beforehand with the same size as input.
 		
-5.	void transform(float input[], float output[], QWindower *windower = NULL,
+7.	void transform(float input[], float output[], QWindower *windower = NULL,
 	Direction direction = QFourierTransformer::Forward);
 
-	Calls one of the function in 3 or 4 above, depending on the direction parameter.
+	Calls one of the function in 5 or 6 above, depending on the direction parameter.
 	This function is generally not recommended since it uses an extra if-statement.
 	Rather use 3 or 4 instead.
 
-6.	void rescale(float input[]);
+8.	void rescale(float input[]);
 
 	After the inverse FFT was calculated, you have to rescale the values of the samples.
 
-7.	void conjugate(float input[]);
+9.	void conjugate(float input[]);
 
 	Conjugates the imaginary part of the input. Hence the imaginary part's sign is changed
 	Eg: input[length/2 + 1] = -input[length/2 + 1]
 
-8.	QComplexVector toComplex(float input[]);
+10.	QComplexVector toComplex(float input[]);
 
-	Converts the FFT calculated with 4 or 5 above to a QVector of complex numbers
+	Converts the FFT calculated with 6 or 7 above to a QVector of complex numbers
 	as explained in the previous section.
 
 ==========================================================================================
-=                                    Window Functions                                    =
+                                     Window Functions
 ==========================================================================================
 
 The following window functions are supported:
@@ -172,12 +204,12 @@ The following window functions are supported:
 3.	Hann
 
 ==========================================================================================
-=                                        History                                         =
+                                         History
 ==========================================================================================
 
 *******************
-** 26 May 2012   **
-** Version 0.2.0 **
+   26 May 2012
+  Version 0.2.0
 *******************
 Entire restructuring of the library.
 Separate running threads removed.
@@ -186,20 +218,24 @@ Separate calculations (forward FFT, inverse FFT and rescaling) moved to the same
 Variable and fixed FFTs now be done with the same functions.
 
 *******************
-** 22 May 2012   **
-** Version 0.1.0 **
+   22 May 2012
+  Version 0.1.0
 *******************
 Initial release
 
 ==========================================================================================
-=                                        Contact                                         =
+                                         Contact
 ==========================================================================================
 
 QRealFourier is part of the Visore project:
 
 http://www.visore.org
+
 http://github.com/visore/Visore
-http://sourceforge.net/projects/visore/
+
+http://sourceforge.net/projects/visore
+
+******************************************************************************************
 
 QRealFourier:
 
@@ -208,12 +244,19 @@ University of Pretoria
 Department of Computer Science
 
 visore.project@gmail.com
+
 http://github.com/visore/QRealFourier
+
 http://sourceforge.net/p/qrealfourier
+
+******************************************************************************************
 
 FFTReal:
 
 Laurent de Soras
+
 laurent.de.soras@free.fr
+
 http://ldesoras.free.fr
+
 

@@ -1,1 +1,0 @@
-/home/visore/Project/QRealFourier/QRealFourier/code/examples/standalone/CMakeFiles/standalone.dir
