@@ -1,0 +1,51 @@
+#!/bin/bash
+
+rename 's/q/vi/' ../code/headers/*
+sed -i 's/q/vi/g' ../code/headers/*
+sed -i 's/Q/Vi/g' ../code/headers/*
+sed -i 's/ViString/QString/g' ../code/headers/*
+sed -i 's/ViVector/QVector/g' ../code/headers/*
+sed -i 's/ViThread/QThread/g' ../code/headers/*
+sed -i 's/ViObject/QObject/g' ../code/headers/*
+sed -i 's/ViList/QList/g' ../code/headers/*
+sed -i 's/vimath/qmath/g' ../code/headers/*
+sed -i 's/Vi_OBJECT/Q_OBJECT/g' ../code/headers/*
+sed -i 's/VitGlobal/QtGlobal/g' ../code/headers/*
+sed -i 's/viPow/qPow/g' ../code/headers/*
+sed -i 's/viSqrt/qSqrt/g' ../code/headers/*
+sed -i 's/viCos/qCos/g' ../code/headers/*
+sed -i 's/viSin/qSin/g' ../code/headers/*
+sed -i 's/viTan/qTan/g' ../code/headers/*
+sed -i 's/viaCos/qAcos/g' ../code/headers/*
+sed -i 's/viAsin/qAsin/g' ../code/headers/*
+sed -i 's/viAtan/qAtan/g' ../code/headers/*
+sed -i 's/viDeleteAll/qDeleteAll/g' ../code/headers/*
+sed -i 's/#ifdef Vi/#ifdef VI/g' ../code/headers/*
+sed -i 's/#ifndef Vi/#ifndef VI/g' ../code/headers/*
+sed -i 's/#define Vi/#define VI/g' ../code/headers/*
+
+rename 's/q/vi/' ../code/sources/*
+sed -i 's/q/vi/g' ../code/sources/*
+
+sed -i 's/Q/Vi/g' ../code/sources/*
+sed -i 's/ViString/QString/g' ../code/sources/*
+sed -i 's/ViVector/QVector/g' ../code/sources/*
+sed -i 's/ViThread/QThread/g' ../code/sources/*
+sed -i 's/ViObject/QObject/g' ../code/sources/*
+sed -i 's/ViList/QList/g' ../code/sources/*
+sed -i 's/vimath/qmath/g' ../code/sources/*
+sed -i 's/Vi_OBJECT/Q_OBJECT/g' ../code/sources/*
+sed -i 's/VitGlobal/QtGlobal/g' ../code/sources/*
+sed -i 's/viPow/qPow/g' ../code/sources/*
+sed -i 's/viSqrt/qSqrt/g' ../code/sources/*
+sed -i 's/viCos/qCos/g' ../code/sources/*
+sed -i 's/viSin/qSin/g' ../code/sources/*
+sed -i 's/viTan/qTan/g' ../code/sources/*
+sed -i 's/viaCos/qAcos/g' ../code/sources/*
+sed -i 's/viAsin/qAsin/g' ../code/sources/*
+sed -i 's/viAtan/qAtan/g' ../code/sources/*
+sed -i 's/viDeleteAll/qDeleteAll/g' ../code/sources/*
+sed -i 's/#ifdef Vi/#ifdef VI/g' ../code/sources/*
+sed -i 's/#ifndef Vi/#ifndef VI/g' ../code/sources/*
+sed -i 's/#define Vi/#define VI/g' ../code/sources/*
+

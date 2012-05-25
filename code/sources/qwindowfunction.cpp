@@ -52,6 +52,14 @@ QWindowFunction<T>* QWindowFunctionManager<T>::createFunction(QString functionNa
 	return NULL;
 }
 
+template <typename T>
+QStringList QWindowFunctionManager<T>::functions()
+{
+	QStringList result;
+	result << "Rectangular" << "Hamming" << "Hann";
+	return result;
+}
+
 /**********************************************************
 QRectangularFunction
 **********************************************************/

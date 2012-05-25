@@ -4,7 +4,12 @@ template <int T>
 QFourierFixedCalculator<T>::QFourierFixedCalculator()
 	: QFourierCalculator()
 {
-	setSize(qPow(2, T));
+	setSize(mFourierTransform.get_length());
+}
+
+template <int T>
+void QFourierFixedCalculator<T>::setSize(int size)
+{
 }
 
 template <int T>

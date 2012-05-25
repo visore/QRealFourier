@@ -1,10 +1,13 @@
 #include "qfouriertransformer.h"
 
-QFourierTransformer::QFourierTransformer(int size)
+QFourierTransformer::QFourierTransformer(int size, QString functionName)
 {
-	mCalculator = NULL;
+	mWindowFunctions = QWindowFunctionManager<float>::functions();
+	mWindowFunction = 0;
+	mCalculator = 0;
 	initialize();
 	setSize(size);
+	setWindowFunction(functionName);
 }
 
 QFourierTransformer::~QFourierTransformer()
@@ -12,6 +15,10 @@ QFourierTransformer::~QFourierTransformer()
 	qDeleteAll(mFixedCalculators.begin(), mFixedCalculators.end());
 	mFixedCalculators.clear();
 	delete mVariableCalculator;
+	if(mWindowFunction != 0)
+	{
+		delete mWindowFunction;
+	}
 }
 
 QFourierTransformer::Initialization QFourierTransformer::setSize(int size)
@@ -19,6 +26,10 @@ QFourierTransformer::Initialization QFourierTransformer::setSize(int size)
 	if(isValidSize(size))
 	{
 		mSize = size;
+		if(mWindowFunction != 0)
+		{
+			mWindowFunction->create(mSize);
+		}
 		int key = sizeToKey(mSize);
 		if(mFixedCalculators.contains(key))
 		{
@@ -32,15 +43,41 @@ QFourierTransformer::Initialization QFourierTransformer::setSize(int size)
 			return QFourierTransformer::VariableSize;
 		}
 	}
-	mSize = -1;
+	mSize = 0;
 	return QFourierTransformer::InvalidSize;
 }
 
-void QFourierTransformer::transform(float input[], float output[], QWindowFunction<float> *windowFunction, Direction direction)
+bool QFourierTransformer::setWindowFunction(QString functionName)
+{
+	for(int i = 0; i < mWindowFunctions.size(); ++i)
+	{
+		if(functionName.trimmed().toLower().replace("function", "") == mWindowFunctions[i].trimmed().toLower().replace("function", ""))
+		{
+			if(mWindowFunction != 0)
+			{
+				delete mWindowFunction;
+			}
+			mWindowFunction = QWindowFunctionManager<float>::createFunction(functionName);
+			if(mWindowFunction != 0 && isValidSize(mSize))
+			{
+				mWindowFunction->create(mSize);
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+QStringList QFourierTransformer::windowFunctions()
+{
+	return mWindowFunctions;
+}
+
+void QFourierTransformer::transform(float input[], float output[], Direction direction)
 {
 	if(direction == QFourierTransformer::Forward)
 	{
-		forwardTransform(input, output, windowFunction);
+		forwardTransform(input, output);
 	}
 	else
 	{
@@ -48,11 +85,11 @@ void QFourierTransformer::transform(float input[], float output[], QWindowFuncti
 	}
 }
 
-void QFourierTransformer::forwardTransform(float *input, float *output, QWindowFunction<float> *windowFunction)
+void QFourierTransformer::forwardTransform(float *input, float *output)
 {
-	if(windowFunction != NULL)
+	if(mWindowFunction != 0)
 	{
-		windowFunction->apply(input, mSize);
+		mWindowFunction->apply(input, mSize);
 	}
 	mCalculator->setData(input, output);
 	mCalculator->forward();

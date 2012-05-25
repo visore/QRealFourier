@@ -28,12 +28,17 @@ int main()
 		samples[i] = i / float(SIZE);
 	}
 
+	QFourierTransformer transformer;
+
+	QStringList functions = transformer.windowFunctions();
+	print("The following window functions are available:\n");
+	for(int i = 0; i < functions.size(); ++i)
+	{
+		print(QString::number(i + 1) + ". " + functions[i] + "\n");
+	}
+
 	print("Samples before transformation:\n");
 	print(samples, SIZE);
-
-	QFourierTransformer transformer;
-	QHammingFunction<float> windowFunction;
-	windowFunction.create(SIZE);
 
 	//Setting a fixed size for the transformation
 	if(transformer.setSize(SIZE) == QFourierTransformer::VariableSize)
@@ -46,7 +51,12 @@ int main()
 		return -1;
 	}
 
-	transformer.forwardTransform(samples, fft, &windowFunction);
+	if(!transformer.setWindowFunction("Hamming"))
+	{
+		print("Could not find this window function. Defaulting to the previous one.\n");
+	}
+
+	transformer.forwardTransform(samples, fft);
 	transformer.inverseTransform(fft, samples);
 	
 	print("Samples after transformation and before rescaling:\n");

@@ -1,0 +1,57 @@
+#!/bin/sh
+
+current_directory=`dirname "$0"`
+current_directory=`cd $current_directory; pwd`
+
+code_directory="$current_directory"/../../code
+build_directory="$current_directory"/../../../build
+install_directory="$current_directory"/../../../install/usr
+
+configure=false;
+build=false;
+install=false;
+package=false;
+for i in $*
+do
+	if [ $i = "configure" ]; then
+		configure=true;
+	elif [ $i = "build" ]; then
+		build=true;
+	elif [ $i = "install" ]; then
+		install=true;
+	elif [ $i = "package" ]; then
+		package=true;
+	fi
+done
+
+if $configure; then
+	rm -r "$install_directory"
+	mkdir "$install_directory"
+	rm -r "$build_directory"
+	mkdir "$build_directory"
+	cd "$build_directory"
+	if [ -f /etc/debian_version ];
+	then
+		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DDISTRO=Debian
+	elif [ -f /etc/redhat_version ];
+	then
+		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DDISTRO=Redhat
+	else
+		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit
+	fi
+fi
+
+if $build; then
+	cd "$build_directory"
+	make -j4 install -j4
+fi
+
+if $install; then
+	cd "$build_directory"
+	make -j4 install -j4
+fi
+
+if $package; then
+	cd "$build_directory"
+	make package
+fi

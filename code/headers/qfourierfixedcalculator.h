@@ -1,7 +1,6 @@
 #ifndef QFOURIERFIXEDCALCULATOR_H
 #define QFOURIERFIXEDCALCULATOR_H
 
-#include <qmath.h> 
 #include "FFTRealFixLen.h"
 #include "qfouriercalculator.h"
 
@@ -12,6 +11,7 @@ class QFourierFixedCalculator : public QFourierCalculator
 	public:
 		
 		QFourierFixedCalculator();
+		void setSize(int size);
 		void forward();
 		void inverse();
 		void rescale();

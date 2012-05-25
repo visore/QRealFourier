@@ -1,0 +1,20 @@
+#!/bin/bash
+
+for i in {1..10}
+do
+
+   sed -i 's/ffft\///g' ../code/fftreal/*
+
+	rename 's/vi/q/' ../code/headers/*
+	sed -i 's/vi/q/g' ../code/headers/*
+	sed -i 's/VI/Q/g' ../code/headers/*
+	sed -i 's/Vi/Q/g' ../code/headers/*
+	sed -i 's/qrtual/virtual/g' ../code/headers/*
+
+	rename 's/vi/q/' ../code/sources/*
+	sed -i 's/vi/q/' ../code/sources/*
+	sed -i 's/VI/Q/' ../code/sources/*
+	sed -i 's/Vi/Q/' ../code/sources/*
+	sed -i 's/qrtual/virtual/g' ../code/sources/*
+
+done

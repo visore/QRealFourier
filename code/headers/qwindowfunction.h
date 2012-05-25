@@ -1,8 +1,8 @@
 #ifndef QWINDOWFUNCTION_H
 #define QWINDOWFUNCTION_H
 
-#include <QtGlobal>
-#include <QString>
+#include <QList>
+#include <QStringList>
 #include <QVector>
 #include "math.h"
 #include <qmath.h>
@@ -43,6 +43,7 @@ class QWindowFunctionManager
 	public:
 
 		static QWindowFunction<T>* createFunction(QString functionName);
+		static QStringList functions();
 
 };
 

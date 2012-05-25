@@ -1,0 +1,106 @@
+<SUF7ThemeData>
+<Name>Visore</Name>
+<IsDefault>0</IsDefault>
+<StyleData>
+<CstClrs>1</CstClrs>
+<TBBG format="hex">ffffff</TBBG>
+<BDYBG format="hex">ffffff</BDYBG>
+<FTBG format="hex">ffffff</FTBG>
+<TBTXT format="hex">333333</TBTXT>
+<BDYTXT format="hex">ffffff</BDYTXT>
+<CBG format="hex">ffffff</CBG>
+<C3DFACE format="hex">333333</C3DFACE>
+<C3DHLT format="hex">ff9900</C3DHLT>
+<C3DLIT format="hex">333333</C3DLIT>
+<C3DSH format="hex">333333</C3DSH>
+<CBTNTXT format="hex">ff9900</CBTNTXT>
+<CTEXT format="hex">333333</CTEXT>
+<CDISTXT format="hex">c0c0c0</CDISTXT>
+<CPRGRS format="hex">ff9900</CPRGRS>
+<C3DSHDK format="hex">333333</C3DSHDK>
+<TBIMG>top.jpg</TBIMG>
+<SBIMG>side.jpg</SBIMG>
+<BDIMG>body.jpg</BDIMG>
+<BDFILL>1</BDFILL>
+<HDSEP>0</HDSEP>
+<FTSEP>0</FTSEP>
+<CstFnts>1</CstFnts>
+<Fonts>
+<FontData>
+<FontName>Arial</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-13</Height>
+<Weight>700</Weight>
+<Italic>1</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+<FontData>
+<FontName>Arial</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-11</Height>
+<Weight>400</Weight>
+<Italic>0</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+<FontData>
+<FontName>Arial</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-27</Height>
+<Weight>700</Weight>
+<Italic>0</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+<FontData>
+<FontName>Arial</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-12</Height>
+<Weight>400</Weight>
+<Italic>0</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+<FontData>
+<FontName>Arial</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-13</Height>
+<Weight>400</Weight>
+<Italic>0</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+</Fonts>
+<CAOff>
+<TP>0</TP>
+<L>26</L>
+<T>30</T>
+<R>15</R>
+<B>11</B>
+</CAOff>
+<CAOff>
+<TP>1</TP>
+<L>8</L>
+<T>40</T>
+<R>10</R>
+<B>13</B>
+</CAOff>
+<CAOff>
+<TP>2</TP>
+<L>22</L>
+<T>50</T>
+<R>15</R>
+<B>8</B>
+</CAOff>
+<TBTXTX>13</TBTXTX>
+<TBTXTY>23</TBTXTY>
+<ScreenW>497</ScreenW>
+<ScreenH>362</ScreenH>
+</StyleData>
+</SUF7ThemeData>

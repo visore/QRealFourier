@@ -29,13 +29,18 @@ class QFourierTransformer
 
 	public:
 
-		QFourierTransformer(int size = -1);
+		QFourierTransformer(int size = 0, QString functionName = "");
 		~QFourierTransformer();
+
 		Initialization setSize(int size);
-		void transform(float input[], float output[], QWindowFunction<float> *windowFunction = NULL, Direction direction = QFourierTransformer::Forward);
-		void forwardTransform(float *input, float *output, QWindowFunction<float> *windowFunction = NULL);
+		bool setWindowFunction(QString functionName);
+		QStringList windowFunctions();
+
+		void transform(float input[], float output[], Direction direction = QFourierTransformer::Forward);
+		void forwardTransform(float *input, float *output);
 		void inverseTransform(float input[], float output[]);
 		void rescale(float input[]);
+
 		void conjugate(float input[]);
 		QComplexVector toComplex(float input[]);
 
@@ -51,6 +56,8 @@ class QFourierTransformer
 		QMap<int, QFourierCalculator*> mFixedCalculators;
 		QFourierCalculator* mVariableCalculator;
 		QFourierCalculator *mCalculator;
+		QStringList mWindowFunctions;
+		QWindowFunction<float> *mWindowFunction;
 
 };
 
