@@ -12,15 +12,20 @@ SET(SOURCES ${ROOT}/sources)
 SET(EXAMPLES ${ROOT}/examples)
 
 #Setup installation directory paths
-SET(INSTALL_LIB_DIR lib/qrealfourier)
-SET(INSTALL_INCLUDE_DIR include/qrealfourier)
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	SET(INSTALL_LIB_DIR lib/qrealfourier)
+	SET(INSTALL_INCLUDE_DIR include/qrealfourier)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	SET(INSTALL_LIB_DIR libaries)
+	SET(INSTALL_INCLUDE_DIR include)
+ENDIF()
 
 #Setup Packaging and Version
 SET(CMAKE_MODULE_PATH ${ROOT}/cmake)
 INCLUDE(Version)
 
 #Setup Qt
-FIND_PACKAGE(Qt COMPONENTS Core REQUIRED)
+FIND_PACKAGE(Qt4 COMPONENTS QtCore REQUIRED)
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 INCLUDE(${QT_USE_FILE})
 
@@ -55,4 +60,6 @@ ADD_EXECUTABLE(example3 ${EXAMPLES}/example3.cpp)
 TARGET_LINK_LIBRARIES(example3 qrealfourier)
 
 #Packaging
-INCLUDE(Packaging)
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	INCLUDE(Packaging)
+ENDIF()
