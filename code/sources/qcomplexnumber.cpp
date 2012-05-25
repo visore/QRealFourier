@@ -1,4 +1,4 @@
-#ifdef QCOMPLEXNUMBER_H
+#include "qcomplexnumber.h"
 
 template <typename T>
 QComplexNumber<T>::QComplexNumber()
@@ -100,4 +100,8 @@ QComplexNumber<T>& QComplexNumber<T>::operator*=(const T &value)
 	return *this;
 }
 
-#endif
+template class QComplexNumber<short>;
+template class QComplexNumber<int>;
+template class QComplexNumber<long>;
+template class QComplexNumber<float>;
+template class QComplexNumber<double>;

@@ -37,6 +37,4 @@ typedef QComplexNumber<float> QComplexFloat;
 typedef QComplexNumber<double> QComplexDouble;
 typedef QComplexNumber<int> QComplexInteger;
 
-#include "../sources/qcomplexnumber.cpp"
-
 #endif

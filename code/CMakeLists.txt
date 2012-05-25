@@ -7,11 +7,15 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 #Setup directory paths
 SET(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 SET(FFTREAL ${ROOT}/fftreal)
-SET(exampleS ${ROOT}/examples)
+SET(HEADERS ${ROOT}/headers)
+SET(SOURCES ${ROOT}/sources)
+SET(EXAMPLES ${ROOT}/examples)
+
+#Setup installation directory paths
+SET(INSTALL_LIB_DIR lib/qrealfourier)
+SET(INSTALL_INCLUDE_DIR include/qrealfourier)
 
 #Setup Packaging and Version
-message(error *${QT_USE_FILE}*)
-message(error *${CMAKE_ROOT}*)
 SET(CMAKE_MODULE_PATH ${ROOT}/cmake)
 INCLUDE(Version)
 
@@ -24,26 +28,31 @@ INCLUDE(${QT_USE_FILE})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} ${ROOT}/headers ${FFTREAL})
 
 #Initiate source files
-FILE(GLOB SOURCES ${ROOT}/sources/*.cpp)
-FILE(GLOB FFTREAL_SOURCES ${FFTREAL}/*.hpp)
-FILE(GLOB HEADERS ${ROOT}/headers/*.h)
-FILE(GLOB FFTREAL_HEADERS ${FFTREAL}/*.h)
+FILE(GLOB SOURCE_FILES ${SOURCES}/*.cpp)
+FILE(GLOB FFTREAL_SOURCE_FILES ${FFTREAL}/*.hpp)
+FILE(GLOB HEADER_FILES ${HEADERS}/*.h)
+FILE(GLOB FFTREAL_HEADER_FILES ${FFTREAL}/*.h)
+FILE(GLOB INSTALL_HEADER_FILES ${HEADERS}/qfouriertransformer.h ${HEADERS}/qcomplexnumber.h ${HEADERS}/qfouriercalculator.h ${HEADERS}/qwindowfunction.h)
 
 #Create shared library
-ADD_LIBRARY(qrealfourier SHARED ${HEADERS} ${FFTREAL_HEADERS} ${SOURCES} ${FFTREAL_SOURCES})
+ADD_LIBRARY(qrealfourier SHARED ${HEADER_FILES} ${FFTREAL_HEADER_FILES} ${SOURCE_FILES} ${FFTREAL_SOURCE_FILES})
 SET_TARGET_PROPERTIES(qrealfourier PROPERTIES LINKER_LANGUAGE CXX)
 TARGET_LINK_LIBRARIES(qrealfourier ${QT_QTCORE_LIBRARY})
 SET_TARGET_PROPERTIES(qrealfourier PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 SET_TARGET_PROPERTIES(qrealfourier PROPERTIES SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 #Install library and header
-INSTALL(TARGETS qrealfourier DESTINATION usr/lib/qrealfourier)
-INSTALL(FILES ${HEADERS} DESTINATION usr/include/qrealfourier)
+INSTALL(TARGETS qrealfourier DESTINATION ${INSTALL_LIB_DIR})
+INSTALL(FILES ${ROOT}/cmake/QRealFourierConfig.cmake DESTINATION ${INSTALL_LIB_DIR})
+INSTALL(FILES ${INSTALL_HEADER_FILES} DESTINATION ${INSTALL_INCLUDE_DIR})
 
 #Create example cases
-ADD_EXECUTABLE(example1 ${exampleS}/example1.cpp)
+ADD_EXECUTABLE(example1 ${EXAMPLES}/example1.cpp)
 TARGET_LINK_LIBRARIES(example1 qrealfourier)
-ADD_EXECUTABLE(example2 ${exampleS}/example2.cpp)
+ADD_EXECUTABLE(example2 ${EXAMPLES}/example2.cpp)
 TARGET_LINK_LIBRARIES(example2 qrealfourier)
-ADD_EXECUTABLE(example3 ${exampleS}/example3.cpp)
+ADD_EXECUTABLE(example3 ${EXAMPLES}/example3.cpp)
 TARGET_LINK_LIBRARIES(example3 qrealfourier)
+
+#Packaging
+INCLUDE(Packaging)

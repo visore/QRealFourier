@@ -22,6 +22,4 @@ class QFourierFixedCalculator : public QFourierCalculator
 
 };
 
-#include "../sources/qfourierfixedcalculator.cpp"
-
 #endif

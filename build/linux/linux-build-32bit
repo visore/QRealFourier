@@ -5,7 +5,7 @@ current_directory=`cd $current_directory; pwd`
 
 code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
-install_directory="$current_directory"/../../../install/usr
+install_directory="$current_directory"/../../../install
 
 configure=false;
 build=false;
@@ -48,7 +48,7 @@ fi
 
 if $install; then
 	cd "$build_directory"
-	make -j4 install -j4
+	install -j4
 fi
 
 if $package; then

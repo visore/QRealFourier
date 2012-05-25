@@ -89,6 +89,4 @@ class QHannFunction : public QWindowFunction<T>
 
 };
 
-#include "../sources/qwindowfunction.cpp"
-
 #endif

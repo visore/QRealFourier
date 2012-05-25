@@ -1,8 +1,7 @@
 #ifndef QFOURIERTRANSFORMER_H
 #define QFOURIERTRANSFORMER_H
 
-#include "qfourierfixedcalculator.h"
-#include "qfouriervariablecalculator.h"
+#include "qfouriercalculator.h"
 #include "qwindowfunction.h"
 #include "qcomplexnumber.h"
 #include <QMap>

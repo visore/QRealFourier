@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/standalone.dir/standalone.cpp.o  -o standalone -rdynamic /usr/lib/qrealfourier/libqrealfourier.so -Wl,-rpath,/usr/lib/qrealfourier 

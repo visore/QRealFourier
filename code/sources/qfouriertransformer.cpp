@@ -1,4 +1,6 @@
 #include "qfouriertransformer.h"
+#include "qfourierfixedcalculator.h"
+#include "qfouriervariablecalculator.h"
 
 QFourierTransformer::QFourierTransformer(int size, QString functionName)
 {

@@ -1,4 +1,4 @@
-#ifdef QFOURIERFIXEDCALCULATOR_H
+#include "qfourierfixedcalculator.h"
 
 template <int T>
 QFourierFixedCalculator<T>::QFourierFixedCalculator()
@@ -30,4 +30,15 @@ void QFourierFixedCalculator<T>::rescale()
 	QFourierFixedCalculator<T>::mFourierTransform.rescale(QFourierCalculator::mInput);
 }
 
-#endif
+template class QFourierFixedCalculator<3>;
+template class QFourierFixedCalculator<4>;
+template class QFourierFixedCalculator<5>;
+template class QFourierFixedCalculator<6>;
+template class QFourierFixedCalculator<7>;
+template class QFourierFixedCalculator<8>;
+template class QFourierFixedCalculator<9>;
+template class QFourierFixedCalculator<10>;
+template class QFourierFixedCalculator<11>;
+template class QFourierFixedCalculator<12>;
+template class QFourierFixedCalculator<13>;
+template class QFourierFixedCalculator<14>;

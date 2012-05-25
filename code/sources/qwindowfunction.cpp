@@ -1,4 +1,4 @@
-#ifdef QWINDOWFUNCTION_H
+#include "qwindowfunction.h"
 
 /**********************************************************
 QWindowFunction
@@ -33,6 +33,12 @@ void QWindowFunction<T>::fillWindow(int size)
 	}
 }
 
+template class QWindowFunction<short>;
+template class QWindowFunction<int>;
+template class QWindowFunction<long>;
+template class QWindowFunction<float>;
+template class QWindowFunction<double>;
+
 /**********************************************************
 QWindowFunctionManager
 **********************************************************/
@@ -60,6 +66,12 @@ QStringList QWindowFunctionManager<T>::functions()
 	return result;
 }
 
+template class QWindowFunctionManager<short>;
+template class QWindowFunctionManager<int>;
+template class QWindowFunctionManager<long>;
+template class QWindowFunctionManager<float>;
+template class QWindowFunctionManager<double>;
+
 /**********************************************************
 QRectangularFunction
 **********************************************************/
@@ -69,6 +81,12 @@ T QRectangularFunction<T>::calculate(int currentSample, int totalSamples)
 {
 	return 1.0;
 }
+
+template class QRectangularFunction<short>;
+template class QRectangularFunction<int>;
+template class QRectangularFunction<long>;
+template class QRectangularFunction<float>;
+template class QRectangularFunction<double>;
 
 /**********************************************************
 QHammingFunction
@@ -80,6 +98,12 @@ T QHammingFunction<T>::calculate(int currentSample, int totalSamples)
 	return 0.54 + (0.46 * qCos((2 * M_PI * currentSample) / (totalSamples - 1)));
 }
 
+template class QHammingFunction<short>;
+template class QHammingFunction<int>;
+template class QHammingFunction<long>;
+template class QHammingFunction<float>;
+template class QHammingFunction<double>;
+
 /**********************************************************
 QHannFunction
 **********************************************************/
@@ -90,4 +114,8 @@ T QHannFunction<T>::calculate(int currentSample, int totalSamples)
 	return 0.5 * (1 - qCos((2 * M_PI * currentSample) / (totalSamples - 1)));
 }
 
-#endif
+template class QHannFunction<short>;
+template class QHannFunction<int>;
+template class QHannFunction<long>;
+template class QHannFunction<float>;
+template class QHannFunction<double>;
