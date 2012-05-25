@@ -1,102 +1,39 @@
 #include "qfouriertransformer.h"
 
-QFourierTransformer::QFourierTransformer(Execution execution, int fixedSize)
-	 : QObject()
+QFourierTransformer::QFourierTransformer(int size)
 {
-	mSize = 0;
-
-	mForwardThread = NULL;
-	mInverseThread = NULL;
-	mRescaleThread = NULL;
-
+	mCalculator = NULL;
 	initialize();
-	setFixedSize(fixedSize);
-	setExecution(execution);
+	setSize(size);
 }
 
 QFourierTransformer::~QFourierTransformer()
 {
-	qDeleteAll(mFixedForwardThreads.begin(), mFixedForwardThreads.end());
-	mFixedForwardThreads.clear();
-
-	qDeleteAll(mFixedInverseThreads.begin(), mFixedInverseThreads.end());
-	mFixedInverseThreads.clear();
-
-	qDeleteAll(mFixedRescaleThreads.begin(), mFixedRescaleThreads.end());
-	mFixedRescaleThreads.clear();
-
-	delete mVariableForwardThread;
-	delete mVariableInverseThread;
-	delete mVariableRescaleThread;
+	qDeleteAll(mFixedCalculators.begin(), mFixedCalculators.end());
+	mFixedCalculators.clear();
+	delete mVariableCalculator;
 }
 
-void QFourierTransformer::emitFinished()
+QFourierTransformer::Initialization QFourierTransformer::setSize(int size)
 {
-	emit finished();
-}
-
-bool QFourierTransformer::setFixedSize(int size)
-{
-	bool wasSetForward = false;
-	bool wasSetInverse = false;
-	bool wasSetRescale = false;
-	int index, last;
-	last = mFixedForwardThreads.size();
-	for(index = 0; index < last; ++index)
-	{
-		if(mFixedForwardThreads[index]->size() == size)
-		{
-			mForwardThread = mFixedForwardThreads[index];
-			wasSetForward = true;
-		}
-	}
-	last = mFixedInverseThreads.size();
-	for(index = 0; index < last; ++index)
-	{
-		if(mFixedInverseThreads[index]->size() == size)
-		{
-			mInverseThread = mFixedInverseThreads[index];
-			wasSetInverse = true;
-		}
-	}
-	last = mFixedRescaleThreads.size();
-	for(index = 0; index < last; ++index)
-	{
-		if(mFixedRescaleThreads[index]->size() == size)
-		{
-			mRescaleThread = mFixedRescaleThreads[index];
-			wasSetRescale = true;
-		}
-	}
-	if(wasSetForward && wasSetInverse && wasSetRescale)
+	if(isValidSize(size))
 	{
 		mSize = size;
-		return true;
+		int key = sizeToKey(mSize);
+		if(mFixedCalculators.contains(key))
+		{
+			mCalculator = mFixedCalculators[key];
+			return QFourierTransformer::FixedSize;
+		}
+		else
+		{
+			mCalculator = mVariableCalculator;
+			mCalculator->setSize(mSize);
+			return QFourierTransformer::VariableSize;
+		}
 	}
-	else
-	{
-		mSize = 0;
-		mForwardThread = mVariableForwardThread;
-		mInverseThread = mVariableInverseThread;
-		mRescaleThread = mVariableRescaleThread;
-		return false;
-	}
-}
-
-void QFourierTransformer::setExecution(Execution execution)
-{
-	if(execution == QFourierTransformer::SameThread)
-	{
-		forwardTransformtion = &QFourierTransformer::forwardTransformSameThread;
-		inverseTransformtion = &QFourierTransformer::inverseTransformSameThread;
-		rescaleTransformtion = &QFourierTransformer::rescaleTransformSameThread;
-	}
-	else
-	{
-		forwardTransformtion = &QFourierTransformer::forwardTransformSeperateThread;
-		inverseTransformtion = &QFourierTransformer::inverseTransformSeperateThread;
-		rescaleTransformtion = &QFourierTransformer::rescaleTransformSeperateThread;
-	}
+	mSize = -1;
+	return QFourierTransformer::InvalidSize;
 }
 
 void QFourierTransformer::transform(float input[], float output[], QWindowFunction<float> *windowFunction, Direction direction)
@@ -117,174 +54,72 @@ void QFourierTransformer::forwardTransform(float *input, float *output, QWindowF
 	{
 		windowFunction->apply(input, mSize);
 	}
-	fixedForwardTransform(input, output);
+	mCalculator->setData(input, output);
+	mCalculator->forward();
 }
 
 void QFourierTransformer::inverseTransform(float input[], float output[])
 {
-	fixedInverseTransform(input, output);
+	mCalculator->setData(input, output);
+	mCalculator->inverse();
 }
 
 void QFourierTransformer::rescale(float input[])
 {
-	fixedRescale(input);
-}
-
-void QFourierTransformer::transform(float input[], float output[], int numberOfSamples, QWindowFunction<float> *windowFunction, Direction direction)
-{
-	if(direction == QFourierTransformer::Forward)
-	{
-		forwardTransform(input, output, numberOfSamples, windowFunction);
-	}
-	else
-	{
-		inverseTransform(input, output, numberOfSamples);
-	}
-}
-
-void QFourierTransformer::forwardTransform(float *input, float *output, int numberOfSamples, QWindowFunction<float> *windowFunction)
-{
-	if(windowFunction != NULL)
-	{
-		windowFunction->apply(input, numberOfSamples);
-	}
-	variableForwardTransform(input, output, numberOfSamples);
-}
-
-void QFourierTransformer::inverseTransform(float input[], float output[], int numberOfSamples)
-{
-	variableInverseTransform(input, output, numberOfSamples);
-}
-
-void QFourierTransformer::rescale(float input[], int numberOfSamples)
-{
-	variableRescale(input, numberOfSamples);
+	mCalculator->setData(input);
+	mCalculator->rescale();
 }
 
 void QFourierTransformer::initialize()
 {
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<3>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<4>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<5>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<6>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<7>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<8>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<9>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<10>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<11>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<12>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<13>(this));
-	mFixedForwardThreads.append(new QFourierFixedForwardThread<14>(this));
+	mFixedCalculators.insert(3, new QFourierFixedCalculator<3>());
+	mFixedCalculators.insert(4, new QFourierFixedCalculator<4>());
+	mFixedCalculators.insert(5, new QFourierFixedCalculator<5>());
+	mFixedCalculators.insert(6, new QFourierFixedCalculator<6>());
+	mFixedCalculators.insert(7, new QFourierFixedCalculator<7>());
+	mFixedCalculators.insert(8, new QFourierFixedCalculator<8>());
+	mFixedCalculators.insert(9, new QFourierFixedCalculator<9>());
+	mFixedCalculators.insert(10, new QFourierFixedCalculator<10>());
+	mFixedCalculators.insert(11, new QFourierFixedCalculator<11>());
+	mFixedCalculators.insert(12, new QFourierFixedCalculator<12>());
+	mFixedCalculators.insert(13, new QFourierFixedCalculator<13>());
+	mFixedCalculators.insert(14, new QFourierFixedCalculator<14>());
 
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<3>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<4>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<5>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<6>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<7>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<8>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<9>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<10>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<11>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<12>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<13>(this));
-	mFixedInverseThreads.append(new QFourierFixedInverseThread<14>(this));
-
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<3>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<4>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<5>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<6>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<7>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<8>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<9>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<10>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<11>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<12>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<13>(this));
-	mFixedRescaleThreads.append(new QFourierFixedRescaleThread<14>(this));
-
-	mVariableForwardThread = new QFourierVariableForwardThread(this);
-	mVariableInverseThread = new QFourierVariableInverseThread(this);
-	mVariableRescaleThread = new QFourierVariableRescaleThread(this);
+	mVariableCalculator = new QFourierVariableCalculator();
 }
 
-void QFourierTransformer::fixedForwardTransform(float *input, float *output)
+int QFourierTransformer::sizeToKey(int size)
 {
-	mForwardThread->setData(input, output);
-	(this->*forwardTransformtion)();
+	float result = log(size) / float(log(2));
+	if(result == float(int(result)))
+	{
+		return result;
+	}
+	return -1;
 }
 
-void QFourierTransformer::fixedInverseTransform(float input[], float output[])
+bool QFourierTransformer::isValidSize(int value)
 {
-	mInverseThread->setData(input, output);
-	(this->*inverseTransformtion)();
+	return ((value > 0) && ((value & (~value + 1)) == value));
 }
 
-void QFourierTransformer::fixedRescale(float input[])
+void QFourierTransformer::conjugate(float input[])
 {
-	mRescaleThread->setData(input);
-	(this->*rescaleTransformtion)();
+	for(int i = mSize / 2 + 1; i < mSize; ++i)
+	{
+		input[i] = -input[i];
+	}
 }
 
-void QFourierTransformer::variableForwardTransform(float input[], float output[], int numberOfSamples)
+QComplexVector QFourierTransformer::toComplex(float input[])
 {
-	mForwardThread->setData(input, output);
-	mForwardThread->setSize(numberOfSamples);
-	(this->*forwardTransformtion)();
-}
-
-void QFourierTransformer::variableInverseTransform(float input[], float output[], int numberOfSamples)
-{
-	mInverseThread->setData(input, output);
-	mInverseThread->setSize(numberOfSamples);
-	(this->*inverseTransformtion)();
-}
-
-void QFourierTransformer::variableRescale(float input[], int numberOfSamples)
-{
-	mRescaleThread->setData(input);
-	mRescaleThread->setSize(numberOfSamples);
-	(this->*rescaleTransformtion)();
-}
-
-void QFourierTransformer::forwardTransformSameThread()
-{
-	mForwardThread->run();
-}
-
-void QFourierTransformer::forwardTransformSeperateThread()
-{
-	mForwardThread->start();
-}
-
-void QFourierTransformer::inverseTransformSameThread()
-{
-	mInverseThread->run();
-}
-
-void QFourierTransformer::inverseTransformSeperateThread()
-{
-	mInverseThread->start();
-}
-
-void QFourierTransformer::rescaleTransformSameThread()
-{
-	mRescaleThread->run();
-}
-
-void QFourierTransformer::rescaleTransformSeperateThread()
-{
-	mRescaleThread->start();
-}
-
-QComplexVector toComplex(float input[], int numberOfSamples)
-{
-	QVector<QComplexFloat> result;
-	int last = numberOfSamples / 2;
-	result.push_back(QComplexFloat(input[0], 0));
+	int last = mSize / 2;
+	QVector<QComplexFloat> result(last + 1);
+	result[0] = QComplexFloat(input[0], 0);
 	for(int i = 1; i < last; ++i)
 	{
-		result.push_back(QComplexFloat(input[i], -input[last + i]));
+		result[i] = QComplexFloat(input[i], -input[last + i]);
 	}
-	result.push_back(QComplexFloat(input[last], 0));
+	result[last] = QComplexFloat(input[last], 0);
 	return result;
 }

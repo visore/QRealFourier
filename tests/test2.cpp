@@ -1,3 +1,15 @@
+/*
+
+This example illustrates the normal behaviour of a forward FFT using the Hamming window function followed by an inverse FFT.
+The values have to be rescaled after a FFT followed by an inverse FFT.
+
+The basic steps:
+ 1. Forward FFT (window function automatically applied here)
+ 2. Inverse FFT
+ 3. Rescaling
+
+*/
+
 #include "qfouriertransformer.h"
 #include "qwindowfunction.h"
 #include "print.h"
@@ -24,9 +36,14 @@ int main()
 	windowFunction.create(SIZE);
 
 	//Setting a fixed size for the transformation
-	if(!transformer.setFixedSize(SIZE))
+	if(transformer.setSize(SIZE) == QFourierTransformer::VariableSize)
 	{
-		print("This size is not a supported power of 2. Using a variable FFT instead.\n");
+		print("This size is not a default fixed size of QRealFourier. Using a variable size instead.\n");
+	}
+	else if(transformer.setSize(SIZE) == QFourierTransformer::InvalidSize)
+	{
+		print("Invalid FFT size.\n");
+		return -1;
 	}
 
 	transformer.forwardTransform(samples, fft, &windowFunction);

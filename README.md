@@ -9,11 +9,10 @@
 ==========================================================================================
 
 
-
 A Qt-based C++ library for Fast Fourier Transform (FFT) of real samples.
 
-Last Release: 22 May 2012
-Latest version: 0.1
+Last Release: 26 May 2012
+Latest version: 0.2.0
 Developer: Christoph Stallmann
 
 
@@ -41,19 +40,33 @@ g++ for Linux and MinGW for Windows.
 =                                       Compiling                                        =
 ==========================================================================================
 
+With Qt installed in the default location
+
+1. mkdir build
+2. cd build
+3. cmake ..
+5. make
+
+With Qt installed in a custom location
+
 1. mkdir build
 2. cd build
 3. ccmake ..
-4. press 'c', 'c' and then 'g'
+4. press 'c', 'c' and then 'g' (change Qt path if needed)
 5. make
 
 ==========================================================================================
 =                                         Usage                                          =
 ==========================================================================================
 
-There are two examples under the tests directory.
-One is using a separate thread, the other one uses the main thread.
-After compiling, you can simply run the executables in the build directory.
+There are three examples under the example directory.
+The first one illustrates a forward FFT, followed by an inverse FFT and the necessary
+rescaling. The second one adds a Hamming window function to the execution. The last
+example illustrates a FFT with a none-default size. Additionally the complex conjugate is
+taken in the last example.
+You can execute the examples by using the command:
+./exampleN
+where N indicates the number of the example (1, 2 or 3).
 
 ==========================================================================================
 =                                      Fixed Sizes                                       =
@@ -86,7 +99,7 @@ the fft array will contain the following:
  f [...]        | Imaginary (bin ...)
  f [length-1]   | Imaginary (bin length/2-1)
 
-The static function QFourierTransformer::toComplex(float input[], int numberOfSamples)
+The static function QFourierTransformer::toComplex(float input[])
 can be used to convert this array into a QComplexVector. QComplexVector is a QVector
 with QComplexNumbers, each number has a real and imaginary part.
 
@@ -96,34 +109,24 @@ with QComplexNumbers, each number has a real and imaginary part.
 
 QRealFourier is the interface that should be used for all transformations.
 
-1.	QFourierTransformer(Execution execution, int fixedSize);
+1.	QFourierTransformer(int size = -1);
 
-	Constructor with both parameters optional.
+	Constructor with optional parameter.
 
-	Execution specifies if the FFT or rescaling should be done in a separate thread.
-	Default is execution in the same thread.
-
-	The second parameter specifies the fixed size of the FFT.
-	The default is -1 which will result in a slower variable size.
+	The parameter specifies the fixed size of the FFT.
+	The default is -1 which will result in a slower variable-sized FFT.
    
+2.	Initialization setSize(int size);
 
-2.	bool setFixedSize(int size);
-
-	Changes the fixed size to one of sizes given in the list above. This is the same as
-	the second parameter in the constructor. Can be changed during runtime.
+	Changes the size to one of sizes given in the list above. This is the same as
+	the parameter in the constructor. Can be changed during runtime.
    
-	If a size not in the prescribed list is passed, false will be returned and the
-	slower variable size FFT will be used.
-
-3.	void setExecution(Execution execution);
-
-	Sets the execution of the FFT to run in the same thread as the caller or in a
-	separate thread. For sizes 16384 or smaller, the same thread is recommended. This is
-	the same as the first parameter of the constructor.
+	If the size is one of the default fixed sizes, FixedSize will be returned. If the
+	size is not in the default list, but still a valid FFT size (power of 2),
+	VariableSize will be returned. If the size is an invalid FFT size, InvalidSize is
+	returned.
 		
-4.	void forwardTransform(float *input, float *output, QWindower *windower);
-
-	This function is used for fixed-sized FFTs.
+3.	void forwardTransform(float *input, float *output, QWindower *windower);
 
 	Calculates the FFT of the input samples and stores them in output. The output array
 	must be allocated beforehand and has the same size as the input array.
@@ -132,66 +135,31 @@ QRealFourier is the interface that should be used for all transformations.
 	will automatically be adjusted according to the window function. If NULL is passed
 	no windowing will be done.
 
-5.	void inverseTransform(float input[], float output[]);
-
-	This function is used for fixed-sized FFTs.
+4.	void inverseTransform(float input[], float output[]);
 
 	Calculates the inverse FFT from the input and stores it as real samples in the output
 	array. The output array must be allocated beforehand with the same size as input.
 		
-6.	void transform(float input[], float output[], QWindower *windower = NULL,
+5.	void transform(float input[], float output[], QWindower *windower = NULL,
 	Direction direction = QFourierTransformer::Forward);
 
-	This function is used for fixed-sized FFTs.
-
-	Calls one of the function in 4 or 5 above, depending on the direction parameter.
+	Calls one of the function in 3 or 4 above, depending on the direction parameter.
 	This function is generally not recommended since it uses an extra if-statement.
-	Rather use 4 or 5 instead.
+	Rather use 3 or 4 instead.
 
-7.	void rescale(float input[]);
-
-	This function is used for fixed-sized FFTs.
+6.	void rescale(float input[]);
 
 	After the inverse FFT was calculated, you have to rescale the values of the samples.
 
-8.	void forwardTransform(float *input, float *output, int numberOfSamples,
-	QWindower *windower = NULL);
+7.	void conjugate(float input[]);
 
-	This function is used for variable-sized FFTs.
+	Conjugates the imaginary part of the input. Hence the imaginary part's sign is changed
+	Eg: input[length/2 + 1] = -input[length/2 + 1]
 
-	The same as the function in 4 above, except that it operates on variable-sized FFTs 
-	constructed at run-time. If you can, use one of the fixed-sizes in the list above,
-	set the size with the function in 2, and then do the transformation with the
-	function in 4.
+8.	QComplexVector toComplex(float input[]);
 
-9.	void inverseTransform(float input[], float output[], int numberOfSamples);
-
-	This function is used for variable-sized FFTs.
-
-	The same as the function in 5 above, except that it operates on variable-sized FFTs 
-	constructed at run-time. If you can, use one of the fixed-sizes in the list above,
-	set the size with the function in 2, and then do the transformation with the
-	function in 5.
-
-10.	void transform(float input[], float output[], int numberOfSamples,
-	QWindower *windower = NULL, Direction direction = QFourierTransformer::Forward);
-	
-	This function is used for variable-sized FFTs.
-
-	The same as the function in 6 above, except that it operates on variable-sized FFTs 
-	constructed at run-time.
-
-11.	void rescale(float input[], int numberOfSamples);
-
-	This function is used for variable-sized FFTs.
-
-	The same as the function in 7 above, except that it operates on variable-sized FFTs 
-	constructed at run-time.
-
-12.	static QComplexVector toComplex(float input[], int numberOfSamples);
-
-	Converts the FFT calculated with 4, 6, 8 or 10 above to a QVector of complex numbers
-	as explained in a previous section.
+	Converts the FFT calculated with 4 or 5 above to a QVector of complex numbers
+	as explained in the previous section.
 
 ==========================================================================================
 =                                    Window Functions                                    =
@@ -207,8 +175,20 @@ The following window functions are supported:
 =                                        History                                         =
 ==========================================================================================
 
-22 May 2012
-Version 0.1
+*******************
+** 26 May 2012   **
+** Version 0.2.0 **
+*******************
+Entire restructuring of the library.
+Separate running threads removed.
+Conjugation support added.
+Separate calculations (forward FFT, inverse FFT and rescaling) moved to the same class.
+Variable and fixed FFTs now be done with the same functions.
+
+*******************
+** 22 May 2012   **
+** Version 0.1.0 **
+*******************
 Initial release
 
 ==========================================================================================
@@ -236,3 +216,4 @@ FFTReal:
 Laurent de Soras
 laurent.de.soras@free.fr
 http://ldesoras.free.fr
+

@@ -1,20 +1,16 @@
 #ifndef QFOURIERTRANSFORMER_H
 #define QFOURIERTRANSFORMER_H
 
-#include "qfourierfixedthread.h"
-#include "qfouriervariablethread.h"
+#include "qfourierfixedcalculator.h"
+#include "qfouriervariablecalculator.h"
 #include "qwindowfunction.h"
 #include "qcomplexnumber.h"
+#include <QMap>
 
 typedef QVector<QComplexFloat> QComplexVector;
 
-class QFourierTransformer : public QObject
+class QFourierTransformer
 {
-	Q_OBJECT
-
-	signals:
-
-		void finished();
 
 	public:
 
@@ -24,69 +20,38 @@ class QFourierTransformer : public QObject
 			Inverse = 1
 		};
 
-		enum Execution
+		enum Initialization
 		{
-			SameThread = 0,
-			SeparateThread = 1
+			VariableSize = 0,
+			FixedSize = 1,
+			InvalidSize = 2
 		};
 
 	public:
 
-		QFourierTransformer(Execution execution = QFourierTransformer::SameThread, int fixedSize = -1);
+		QFourierTransformer(int size = -1);
 		~QFourierTransformer();
-		void emitFinished();
-
-		bool setFixedSize(int size);
-		void setExecution(Execution execution);
-		
+		Initialization setSize(int size);
 		void transform(float input[], float output[], QWindowFunction<float> *windowFunction = NULL, Direction direction = QFourierTransformer::Forward);
 		void forwardTransform(float *input, float *output, QWindowFunction<float> *windowFunction = NULL);
 		void inverseTransform(float input[], float output[]);
 		void rescale(float input[]);
+		void conjugate(float input[]);
+		QComplexVector toComplex(float input[]);
 
-		void transform(float input[], float output[], int numberOfSamples, QWindowFunction<float> *windowFunction = NULL, Direction direction = QFourierTransformer::Forward);
-		void forwardTransform(float *input, float *output, int numberOfSamples, QWindowFunction<float> *windowFunction = NULL);
-		void inverseTransform(float input[], float output[], int numberOfSamples);
-
-		void rescale(float input[], int numberOfSamples);
-		static QComplexVector toComplex(float input[], int numberOfSamples);
-
-	private:
+	protected:
 
 		void initialize();
-
-		void fixedForwardTransform(float *input, float *output);
-		void fixedInverseTransform(float input[], float output[]);
-		void fixedRescale(float input[]);
-		void variableForwardTransform(float input[], float output[], int numberOfSamples);
-		void variableInverseTransform(float input[], float output[], int numberOfSamples);
-		void variableRescale(float input[], int numberOfSamples);
-
-		void forwardTransformSameThread();
-		void forwardTransformSeperateThread();
-		void inverseTransformSameThread();
-		void inverseTransformSeperateThread();
-		void rescaleTransformSameThread();
-		void rescaleTransformSeperateThread();
+		int sizeToKey(int size);
+		bool isValidSize(int value);
 
 	private:
 
-		Execution mExecution;
 		int mSize;
+		QMap<int, QFourierCalculator*> mFixedCalculators;
+		QFourierCalculator* mVariableCalculator;
+		QFourierCalculator *mCalculator;
 
-		QList<QFourierThread*> mFixedForwardThreads;
-		QList<QFourierThread*> mFixedInverseThreads;
-		QList<QFourierThread*> mFixedRescaleThreads;
-		QFourierThread* mVariableForwardThread;
-		QFourierThread* mVariableInverseThread;
-		QFourierThread* mVariableRescaleThread;
-		QFourierThread *mForwardThread;
-		QFourierThread *mInverseThread;
-		QFourierThread *mRescaleThread;
-
-		void (QFourierTransformer::*forwardTransformtion)();
-		void (QFourierTransformer::*inverseTransformtion)();
-		void (QFourierTransformer::*rescaleTransformtion)();
 };
 
 #endif
