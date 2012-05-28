@@ -8,53 +8,43 @@ current_directory=`cd $current_directory; pwd`
 
 source_code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
-install_directory="$current_directory"/../../../install/Applications/Visore.app/Contents/MacOS
-installer_directory="$current_directory"/../../installer/mac
+install_directory="$current_directory"/../../../install
 
-export PATH=$PATH:"$source_code_directory"/external/bass/libraries/32bit
 export CMAKE_PREFIX_PATH=$qmake_directory
 
-cmake=false;
+configure=false;
 build=false;
-run=false;
-package=false;
+install=false;
 for i in $*
 do
-	if [ $i = "cmake" ]; then
-		cmake=true;
+	if [ $i = "configure" ]; then
+		configure=true;
 	elif [ $i = "build" ]; then
 		build=true;
-	elif [ $i = "run" ]; then
-		run=true;
-	elif [ $i = "package" ]; then
-		package=true;
+	elif [ $i = "install" ]; then
+		install=true;
 	fi
 done
 
-if $cmake; then
+if $configure; then
 	rm -r "$install_directory"
 	mkdir "$install_directory"
 	rm -r "$build_directory"
 	mkdir "$build_directory"
 	cd "$build_directory"
 	ccmake --no-warn-unused-cli "$source_code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Debug -DARCHITECTURE=32bit
-	make install
 fi
 
 if $build; then
+	cd "$build_directory"
+	make
+fi
+
+if $install; then
 	cd "$build_directory"
 	make install
 	mkdir "$install_directory"/external/qt
 	cp "$qt_library_directory"/QtCore.framework/Versions/4/QtCore "$install_directory"/external/qt
 	cp "$qt_library_directory"/QtGui.framework/Versions/4/QtGui "$install_directory"/external/qt
 	cp -r "$qt_library_directory"/QtGui.framework/Versions/4/Resources/qt_menu.nib "$install_directory"/external/qt
-fi
-
-if $package; then
-	/Applications/Packages.app/Contents/MacOS/Packages "$installer_directory"/Visore.pkgproj
-fi
-
-if $run; then
-	cd $install_directory
-	./launcher
 fi

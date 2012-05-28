@@ -1,19 +1,18 @@
 ==========================================================================================
 ==========================================================================================
-==========================================================================================
+******************************************************************************************
 
                                        QRealFourier
-
-==========================================================================================
+******************************************************************************************
 ==========================================================================================
 ==========================================================================================
 
 
 A Qt-based C++ library for Fast Fourier Transform (FFT) of real samples.
 
-Last Release: 26 May 2012
+Last Release: 28 May 2012
 Latest version: 0.2.0
-Developer: Christoph Stallmann
+Developer: Christoph Stallmann, University of Pretoria
 
 
 ==========================================================================================
@@ -28,12 +27,22 @@ handling forward and inverse FFTs and rescaling. A lot of the work is done durin
 time which creates a more efficient FFT implementation. The library is slightly larger and
 takes up a couple of extra bytes, but this is a fair trade-off for simplicity.
 
+
+==========================================================================================
+                                         License
+==========================================================================================
+
+QRealFourier is distributed under the Lesser GNU General Public License (LGPL) version 3
+(LGPLv3). Copyright © 2012 Christoph Stallmann, University of Pretoria.
+
+Please refer to License.txt and Copyright.txt for further information.
+
 ==========================================================================================
                                       Requirements
 ==========================================================================================
 
-QRealFourier requires CMake (2.6 or later) for makefile generation. Qt (4.7 or later) is
-also required. Qt5 will be supported soon. Any native compilers should do, recommended are
+QRealFourier requires CMake (2.6 or later) for makefile generation and Qt (4.7 or later).
+Qt5 will be supported soon. Any native compilers should do, recommended are
 g++ for Linux and MinGW for Windows.
 
 ==========================================================================================
@@ -50,7 +59,7 @@ where os is your operating system (Linux, Windows or Mac) and architecture is 32
 1. configure: configure cmake
 2. build: compile QRealFourier
 3. install: install the library
-4. package: create a DEB or RPM package (if possible)
+4. package: create a DEB RPM or STGZ package (if possible - Linux only)
 
 Linux example: "sh build/linux/linux-build-32bit configure build install package"
 
@@ -193,6 +202,7 @@ QRealFourier is the interface that should be used for all transformations.
 	Converts the FFT calculated with 6 or 7 above to a QVector of complex numbers
 	as explained in the previous section.
 
+
 ==========================================================================================
                                      Window Functions
 ==========================================================================================
@@ -203,12 +213,13 @@ The following window functions are supported:
 2.	Hamming
 3.	Hann
 
+
 ==========================================================================================
                                          History
 ==========================================================================================
 
 *******************
-   26 May 2012
+   28 May 2012
   Version 0.2.0
 *******************
 Entire restructuring of the library.
@@ -216,12 +227,13 @@ Separate running threads removed.
 Conjugation support added.
 Separate calculations (forward FFT, inverse FFT and rescaling) moved to the same class.
 Variable and fixed FFTs now be done with the same functions.
+Window functions called via their name in QFourierTransformer.
 
 *******************
    22 May 2012
   Version 0.1.0
 *******************
-Initial release
+Initial release.
 
 ==========================================================================================
                                          Contact
@@ -235,7 +247,7 @@ http://github.com/visore/Visore
 
 http://sourceforge.net/projects/visore
 
-******************************************************************************************
+*******************
 
 QRealFourier:
 
@@ -243,13 +255,15 @@ Christoph Stallmann
 University of Pretoria
 Department of Computer Science
 
-visore.project@gmail.com
+qrealfourier@visore.org
+
+qrealfourier@gmail.com
 
 http://github.com/visore/QRealFourier
 
 http://sourceforge.net/p/qrealfourier
 
-******************************************************************************************
+*******************
 
 FFTReal:
 
