@@ -1,0 +1,44 @@
+#!/bin/sh
+
+current_directory=`dirname "$0"`
+current_directory=`cd $current_directory; pwd`
+
+qt_directory=/Users/visore/QtSDK4.8.0framework
+code_directory="$current_directory"/../../code
+build_directory="$current_directory"/../../../build
+install_directory="$current_directory"/../../../install
+
+export CMAKE_PREFIX_PATH=$qt_directory/bin
+
+configure=false;
+build=false;
+install=false;
+for i in $*
+do
+	if [ $i = "configure" ]; then
+		configure=true;
+	elif [ $i = "build" ]; then
+		build=true;
+	elif [ $i = "install" ]; then
+		install=true;
+	fi
+done
+
+if $configure; then
+	rm -r "$install_directory"
+	mkdir "$install_directory"
+	rm -r "$build_directory"
+	mkdir "$build_directory"
+	cd "$build_directory"
+	cmake --no-warn-unused-cli "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Debug -DARCHITECTURE=64bit
+fi
+
+if $build; then
+	cd "$build_directory"
+	make
+fi
+
+if $install; then
+	cd "$build_directory"
+	make install
+fi

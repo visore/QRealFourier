@@ -169,7 +169,7 @@ void QFourierTransformer::initialize()
 
 int QFourierTransformer::sizeToKey(int size)
 {
-	float result = log(size) / float(log(2));
+	float result = log(float(size)) / log(2.0);
 	if(result == float(int(result)))
 	{
 		return result;
