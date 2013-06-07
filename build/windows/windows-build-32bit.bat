@@ -2,7 +2,7 @@
 setlocal enableextensions enabledelayedexpansion
 
 set mingw_directory=C:\QtSDK\mingw\bin
-set qt_directory=C:\QtSDK\Desktop\Qt\4.7.4\mingw
+set qt_directory=C:\QtSDK\Desktop\Qt\5.0.2\mingw
 set source_directory=C:\Users\GOOmuckel\Documents\Uni\Masters\code\QRealFourier\QRealFourier\code
 
 set build_directory=%source_directory%\..\..\build
@@ -31,7 +31,7 @@ if %configure%==true (
 	rmdir /S /Q %install_directory%
 	mkdir %install_directory%
 
-	cmake -G "MinGW Makefiles" --build %build_directory% -D CMAKE_INSTALL_PREFIX=%install_directory% -DCMAKE_BUILD_TYPE=Release %source_directory%
+	cmake -G "MinGW Makefiles" --build %build_directory% -D CMAKE_INSTALL_PREFIX=%install_directory% -DCMAKE_BUILD_TYPE=Release -DQT_DIRECTORY=$qt_directory% %source_directory%
 )
 
 if %build%==true (
@@ -45,5 +45,5 @@ if %install%==true (
 
 	copy %mingw_directory%\mingwm10.dll %install_directory%
 	copy %mingw_directory%\libgcc_s_dw2-1.dll %install_directory%
-	copy %qt_directory%\bin\QtCore4.dll %install_directory%
+	copy %qt_directory%\bin\Qt5Core.dll %install_directory%
 )

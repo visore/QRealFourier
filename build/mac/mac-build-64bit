@@ -7,8 +7,7 @@ qt_directory=/Users/visore/QtSDK4.8.0framework
 code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
 install_directory="$current_directory"/../../../install
-
-export CMAKE_PREFIX_PATH=$qt_directory/bin
+qt_directory=/opt/Qt5.0.2/5.0.2/gcc_64
 
 configure=false;
 build=false;
@@ -30,15 +29,15 @@ if $configure; then
 	rm -r "$build_directory"
 	mkdir "$build_directory"
 	cd "$build_directory"
-	cmake --no-warn-unused-cli "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Debug -DARCHITECTURE=64bit
+	cmake --no-warn-unused-cli "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Debug -DARCHITECTURE=64bit -DQT_DIRECTORY="$qt_directory"
 fi
 
 if $build; then
 	cd "$build_directory"
-	make
+	make -j4
 fi
 
 if $install; then
 	cd "$build_directory"
-	make install
+	make -j4 install -j4
 fi

@@ -49,6 +49,7 @@ class QFourierCalculator
 	public:
 		
 		QFourierCalculator();
+		virtual ~QFourierCalculator();
 		virtual void setData(float input[], float output[] = 0);
 		virtual void setSize(int size);
 		virtual int size();

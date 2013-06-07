@@ -79,6 +79,7 @@ class QWindowFunction
 /**********************************************************
 QWindowFunctionManager
 **********************************************************/
+
 template <typename T>
 class QWindowFunctionManager
 {

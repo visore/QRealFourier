@@ -10,8 +10,8 @@
 
 A Qt-based C++ library for Fast Fourier Transform (FFT) of real samples.
 
-Last Release: 28 May 2012
-Latest version: 0.2.0
+Last Release: 12 June 2013
+Latest version: 0.3.0
 Developer: Christoph Stallmann, University of Pretoria
 
 
@@ -41,9 +41,8 @@ Please refer to License.txt and Copyright.txt for further information.
                                       Requirements
 ==========================================================================================
 
-QRealFourier requires CMake (2.6 or later) for makefile generation and Qt (4.7 or later).
-Qt5 will be supported soon. Any native compilers should do, recommended are
-g++ for Linux and MinGW for Windows.
+QRealFourier requires CMake (2.8.9 or later) for makefile generation and Qt (5.0 or later).
+Any native compilers should do, recommended are g++ for Linux and MinGW for Windows.
 
 ==========================================================================================
                                         Compiling
@@ -217,6 +216,13 @@ The following window functions are supported:
 ==========================================================================================
                                          History
 ==========================================================================================
+
+*******************
+   12 June 2013
+  Version 0.3.0
+*******************
+QRealFourier now requires Qt5.
+Memory leak fixed with a virtual destructor.
 
 *******************
    28 May 2012

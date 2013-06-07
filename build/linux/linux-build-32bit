@@ -6,6 +6,7 @@ current_directory=`cd $current_directory; pwd`
 code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
 install_directory="$current_directory"/../../../install
+qt_directory=/opt/Qt5.0.2/5.0.2/gcc_64
 
 configure=false;
 build=false;
@@ -32,12 +33,12 @@ if $configure; then
 	cd "$build_directory"
 	if [ -f /etc/debian_version ];
 	then
-		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DDISTRO=Debian
+		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DDISTRO=Debian -DQT_DIRECTORY="$qt_directory"
 	elif [ -f /etc/redhat_version ];
 	then
-		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DDISTRO=Redhat
+		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DDISTRO=Redhat -DQT_DIRECTORY="$qt_directory"
 	else
-		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit
+		cmake "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Release -DARCHITECTURE=32bit -DQT_DIRECTORY="$qt_directory"
 	fi
 fi
 

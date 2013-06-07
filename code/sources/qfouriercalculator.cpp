@@ -48,6 +48,10 @@ QFourierCalculator::QFourierCalculator()
 	mSize = 0;
 }
 
+QFourierCalculator::~QFourierCalculator()
+{
+}
+
 void QFourierCalculator::setData(float input[], float output[])
 {
 	mInput = input;

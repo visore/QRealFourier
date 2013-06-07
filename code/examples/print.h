@@ -48,7 +48,7 @@ using namespace std;
 
 void print(QString string)
 {
-	cout << string.toAscii().data();
+	cout << string.toLatin1().data();
 }
 
 void print(float values[], int size)
