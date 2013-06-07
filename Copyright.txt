@@ -2,7 +2,7 @@
 QRealFourier is licensed under the Lesser GNU General Public License (LGPL)
 version 3 (LGPLv3).
 
-Copyright © 2012 Christoph Stallmann, University of Pretoria
+Copyright © 2012 - 2013 Christoph Stallmann, University of Pretoria
 
 Developer: Christoph Stallmann
 University of Pretoria

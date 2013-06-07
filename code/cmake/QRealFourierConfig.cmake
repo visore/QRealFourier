@@ -6,7 +6,7 @@
 #  QREALFOURIER_FOUND: If QRealFourier was found or not
 
 #=============================================================================
-# Copyright 2011-2012 Christoph Stallmann
+# Copyright 2011-2013 Christoph Stallmann
 #
 # University of Pretoria
 # Department of Computer Science
