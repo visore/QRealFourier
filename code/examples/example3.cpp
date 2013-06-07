@@ -31,7 +31,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 ************************************************************************
 
-Copyright © 2012 Christoph Stallmann, University of Pretoria
+Copyright © 2012 - 2013 Christoph Stallmann, University of Pretoria
 
 Developer: Christoph Stallmann
 University of Pretoria
