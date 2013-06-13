@@ -6,7 +6,7 @@ current_directory=`cd $current_directory; pwd`
 code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
 install_directory="$current_directory"/../../../install
-qt_directory=/opt/Qt5.0.2/5.0.2/gcc_64
+qt_directory=/opt/Qt5.0.2/5.0.2/gcc_32
 
 configure=false;
 build=false;

@@ -8,7 +8,6 @@ IF(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 ENDIF()
 
-
 #Setup directory paths
 SET(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 SET(FFTREAL ${ROOT}/fftreal)
@@ -17,13 +16,8 @@ SET(SOURCES ${ROOT}/sources)
 SET(EXAMPLES ${ROOT}/examples)
 
 #Setup installation directory paths
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	SET(INSTALL_LIB_DIR lib/qrealfourier)
-	SET(INSTALL_INCLUDE_DIR include/qrealfourier)
-ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	SET(INSTALL_LIB_DIR libaries)
-	SET(INSTALL_INCLUDE_DIR include)
-ENDIF()
+SET(INSTALL_LIB_DIR lib)
+SET(INSTALL_INCLUDE_DIR include)
 
 #Setup Packaging and Version
 SET(CMAKE_MODULE_PATH ${ROOT}/cmake)

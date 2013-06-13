@@ -3,11 +3,10 @@
 current_directory=`dirname "$0"`
 current_directory=`cd $current_directory; pwd`
 
-qt_directory=/Users/visore/QtSDK4.8.0framework
+qt_directory=/Users/visore/Qt5.0.2/5.0.2/clang_64
 code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
 install_directory="$current_directory"/../../../install
-qt_directory=/opt/Qt5.0.2/5.0.2/gcc_64
 
 configure=false;
 build=false;

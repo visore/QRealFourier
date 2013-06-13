@@ -3,10 +3,10 @@
 current_directory=`dirname "$0"`
 current_directory=`cd $current_directory; pwd`
 
-source_code_directory="$current_directory"/../../code
+qt_directory=/Users/visore/Qt5.0.2/5.0.2/clang_32
+code_directory="$current_directory"/../../code
 build_directory="$current_directory"/../../../build
 install_directory="$current_directory"/../../../install
-qt_directory=/opt/Qt5.0.2/5.0.2/gcc_64
 
 configure=false;
 build=false;
@@ -28,7 +28,7 @@ if $configure; then
 	rm -r "$build_directory"
 	mkdir "$build_directory"
 	cd "$build_directory"
-	ccmake --no-warn-unused-cli "$source_code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Debug -DARCHITECTURE=32bit -DQT_DIRECTORY="$qt_directory"
+	cmake --no-warn-unused-cli "$code_directory" -DCMAKE_INSTALL_PREFIX="$install_directory" -DCMAKE_BUILD_TYPE=Debug -DARCHITECTURE=32bit -DQT_DIRECTORY="$qt_directory"
 fi
 
 if $build; then
